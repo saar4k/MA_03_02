@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 class FileWriter {
     Boolean m_bIsPause = false;
@@ -123,7 +124,7 @@ class FileWriter {
             return;
 
         String time1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        write(String.format("%s,%.6f,%.6f,%.0f,%f\n", time1, latitude, longitude, altitude, speed));
+        write(String.format(Locale.US,"%s,%.6f,%.6f,%.2f,%.2f\n", time1, latitude, longitude, altitude, speed));
         //log("wrote position");
     }
 
