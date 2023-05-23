@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,21 +23,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private static final int PERMISSIONS_REQUEST_LOCATION = 1;
+    private static final int PERMISSIONS_REQUEST_WRITE_STORAGE = 2;
+
     private LocationManager locationManager;
     private TextView hoehenValueTextView, speedValueTextView;
     private TextView latitudeValueTextView, longitudeValueTextView;
 
     private boolean isDecimalDegrees = true;
+    private FileWriter fileWriter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fileWriter = new FileWriter(this);
 
         latitudeValueTextView = findViewById(R.id.latitude_value_textview);
         longitudeValueTextView = findViewById(R.id.longitude_value_textview);
@@ -81,12 +92,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
+
+
+
     @Override
     public void onLocationChanged(Location location) {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         double altitude = location.getAltitude();
         float speed = location.getSpeed();
+
+        // Überprüfen Sie die Berechtigung und starten Sie die Aufnahme, wenn dies noch nicht geschehen ist
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (!fileWriter.isRecording()) {
+                fileWriter.startRecordingCSV();
+            }
+            fileWriter.writePositionCSV(longitude, latitude, altitude, speed);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_WRITE_STORAGE);
+        }
 
         if (isDecimalDegrees) {
             latitudeValueTextView.setText(String.format("Lat: %.6f", latitude));
@@ -98,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         hoehenValueTextView.setText(String.format("%.2f m", altitude));
         speedValueTextView.setText(String.format("%.2f km/h", speed));
     }
+
 
     private String convertToDMS(double coordinate, boolean isLatitude) {
         String direction = isLatitude ? (coordinate >= 0 ? "N" : "S") : (coordinate >= 0 ? "E" : "W");
