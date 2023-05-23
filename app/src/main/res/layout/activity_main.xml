@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
     <TextView
         android:id="@+id/koordinaten_textview"
         android:layout_width="wrap_content"
@@ -14,8 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/hoehen_textview"
-        app:layout_constraintVertical_bias="0.5"
         android:textAppearance="@style/TextAppearance.DarkGrey.Heading"/>
 
     <TextView
@@ -25,9 +25,7 @@
         android:text="Höhe"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/koordinaten_textview"
-        app:layout_constraintBottom_toTopOf="@+id/speed_textView"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/longitude_value_textview"
         android:textAppearance="@style/TextAppearance.DarkGrey.Heading"/>
 
     <TextView
@@ -37,9 +35,7 @@
         android:text="Speed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hoehen_textview"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/hoehen_value_textview"
         android:textAppearance="@style/TextAppearance.DarkGrey.Heading"/>
 
     <!-- Latitude TextView (Wert) -->
@@ -82,4 +78,14 @@
         app:layout_constraintStart_toStartOf="@+id/speed_textView"
         app:layout_constraintEnd_toEndOf="@+id/speed_textView"
         android:textAppearance="@style/TextAppearance.DarkGrey"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="250dp"
+        android:scrollIndicators="right"
+        app:layout_constraintTop_toBottomOf="@+id/speed_value_textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
